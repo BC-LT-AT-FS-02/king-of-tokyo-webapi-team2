@@ -1,6 +1,10 @@
 name: King of Tokyo
 
-on: [push]
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -38,3 +42,6 @@ jobs:
           path: .coveragereport
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag kot-image:$(date +%s)
