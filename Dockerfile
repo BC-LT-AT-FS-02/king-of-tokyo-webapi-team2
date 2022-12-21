@@ -9,6 +9,7 @@ RUN dotnet restore
 RUN dotnet build
 
 #Run unit test
+FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /GameTest
 COPY . ./
 RUN dotnet restore
@@ -16,7 +17,7 @@ RUN dotnet test
 RUN dotnet publish
 
 #Copy and publish a release
-# FROM mcr.microsoft.com/dotnet/sdk:6.0
+FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /
 COPY . ./
 RUN cd Game && dotnet restore
