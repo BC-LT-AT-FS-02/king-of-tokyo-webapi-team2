@@ -26,6 +26,6 @@ RUN cd Game && dotnet publish -c Release -o out
 #Build runtime image
 # FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /Game
-COPY --from=0 /Game/out .
+COPY --from=0 /Game .
 ENV ASPNETCORE_URLS=http://+:7021
 ENTRYPOINT ["dotnet", "KOF.dll"]
