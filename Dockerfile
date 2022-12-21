@@ -8,8 +8,9 @@ RUN dotnet publish
 EXPOSE 7021
 #copy, build, and publish a release
 FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /
 COPY . ./
-RUN dotnet restore
+RUN cd Game && dotnet restore
 RUN cd Game && dotnet publish -c Release -o DockerBuilds
 
 #build runtime image
