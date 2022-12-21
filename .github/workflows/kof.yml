@@ -3,8 +3,8 @@ name: King of Tokyo
 on:
   push:
     branches: [ '**' ]
-  pull_request:
-    branches: [ main ]
+  #pull_request:
+    #branches: [ main ]
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
           name: code-coverage-${{ matrix.dotnet-version }}
           path: .coveragereport
         # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
+        if: ${{ always() }}-image:$(date +%s)
       - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag kot-image:$(date +%s)
+      - name: Build docker-compose image
+        run: docker-compose build web
