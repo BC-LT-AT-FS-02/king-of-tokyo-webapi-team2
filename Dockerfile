@@ -1,12 +1,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+#expose port
+EXPOSE 7021
+
+#Build
+WORKDIR /Game
+COPY . ./
+RUN dotnet restore
+RUN dotnet build
+
 #Run unit test
 WORKDIR /GameTest
 COPY . ./
+RUN dotnet restore
 RUN dotnet test
 RUN dotnet publish
-#expose port
-EXPOSE 7021
-#Copy, build, and publish a release
+
+#Copy and publish a release
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /
 COPY . ./
@@ -15,7 +24,7 @@ RUN cd Game && dotnet publish -c Release -o DockerBuilds
 
 #Build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:6.0
-WORKDIR /Game/DockerBuilds
-COPY . .
+WORKDIR /Game
+COPY --from=0 /Game/out .
 ENV ASPNETCORE_URLS=http://+:7021
 ENTRYPOINT ["dotnet", "KOF.dll"]
