@@ -7,5 +7,6 @@ COPY . .
 WORKDIR /Game
 RUN dotnet restore
 RUN dotnet publish -c Release -o DockerBuilds
+RUN dotnet test
 WORKDIR /Game/DockerBuilds
 ENTRYPOINT ["dotnet", "KOF.dll"]

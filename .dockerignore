@@ -1,0 +1,11 @@
+.config/
+.coveragereport/
+.github/
+Game/bin/
+Game/obj/
+Dockerfile
+.dockerignore
+.editorconfig
+.gitignore
+KOF.sln
+README-CODE-CONVENTIONS.md
