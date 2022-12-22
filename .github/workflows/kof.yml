@@ -54,7 +54,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       # Tag the Docker image
       - name: Tag the Docker image
-        run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:latest
+        run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
       # Push the Docker image to Docker Hub
       - name: Push the Docker image
-        run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:latest
+        run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
