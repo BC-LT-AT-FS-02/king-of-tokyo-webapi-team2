@@ -43,5 +43,18 @@ jobs:
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}-image:$(date +%s)
       - uses: actions/checkout@v2
+      # Build docker-compose image
       - name: Build docker-compose image
         run: docker-compose build web
+      # Log in to Docker Hub
+      - name: Login to Docker Hub
+        env: 
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      # Tag the Docker image
+      - name: Tag the Docker image
+        run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:latest
+      # Push the Docker image to Docker Hub
+      - name: Push the Docker image
+        run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:latest
