@@ -40,6 +40,19 @@ jobs:
         with:
           name: code-coverage-${{ matrix.dotnet-version }}
           path: .coveragereport
+      # Sonarqb
+      - uses: actions/checkout@v3
+      - name: Restore project sonarqb
+        run: dotnet restore
+      - name: Start sonarqb process
+        run: dotnet sonarscanner begin /d:sonar.login="${{secrets.SSCANNER_TOKEN}}" /d:sonar.host.url="https://sonarcloud.io"
+        # run: dotnet sonarscanner begin /k:$SSCANNER_KEY /o:$SSCANNER_ORGANIZATION /d:sonar.login=$SSCANNER_TOKEN /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+      # - name: Build the project
+      #   run: dotnet build --no-incremental KOF.sln
+      # - name: Run the coverage
+      #   run: dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
+      - name: End the sonarqb process
+        run: dotnet sonarscanner end /d:sonar.login="${{secrets.SSCANER_TOKEN}}"
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}-image:$(date +%s)
       - uses: actions/checkout@v2
