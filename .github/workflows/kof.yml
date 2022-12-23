@@ -25,36 +25,25 @@ jobs:
       - name: Check format issues
         run: dotnet format --verify-no-changes -v d
       - name: Run tests
-        run: dotnet test -l html --collect:"XPlat Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}"
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
-      - name: Generate code coverage report
-        run: dotnet reportgenerator -reports:"TestResults-${{ matrix.dotnet-version }}/**/*.cobertura.xml" -targetdir:".coveragereport"
-      - name: Upload code coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-${{ matrix.dotnet-version }}
-          path: .coveragereport
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}-image:$(date +%s)
-      - uses: actions/checkout@v2
+        run: |
+          dotnet tool install --global dotnet-coverage
+          dotnet sonarscanner begin /k:"king-of-tokyo-webapi-jalakey" /o:"jala-devops-key" /d:sonar.login="dc50955257c767e63a14e2eed8f72d27ba549fd8" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          dotnet build --no-incremental KOF.sln
+          dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
+          dotnet sonarscanner end /d:sonar.login="dc50955257c767e63a14e2eed8f72d27ba549fd8"
+      #- uses: actions/checkout@v2
       # Build docker-compose image
-      - name: Build docker-compose image
-        run: docker-compose build web
-      # Log in to Docker Hub
-      - name: Login to Docker Hub
-        env: 
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      # Tag the Docker image
-      - name: Tag the Docker image
-        run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
-      # Push the Docker image to Docker Hub
-      - name: Push the Docker image
-        run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
+      #- name: Build docker-compose image
+      #  run: docker-compose build web
+      ## Log in to Docker Hub
+      #- name: Login to Docker Hub
+      #  env: 
+      #    DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      #    DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      #  run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      ## Tag the Docker image
+      #- name: Tag the Docker image
+      #  run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
+      ## Push the Docker image to Docker Hub
+      #- name: Push the Docker image
+      #  run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
