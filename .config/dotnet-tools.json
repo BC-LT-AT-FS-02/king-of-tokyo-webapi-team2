@@ -7,6 +7,18 @@
       "commands": [
         "reportgenerator"
       ]
+    },
+    "dotnet-coverage": {
+      "version": "17.5.2",
+      "commands": [
+        "dotnet-coverage"
+      ]
+    },
+    "dotnet-sonarscanner": {
+      "version": "5.9.2",
+      "commands": [
+        "dotnet-sonarscanner"
+      ]
     }
   }
 }

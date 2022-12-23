@@ -9,3 +9,4 @@ Dockerfile
 .gitignore
 KOF.sln
 README-CODE-CONVENTIONS.md
+.sonarqube/
