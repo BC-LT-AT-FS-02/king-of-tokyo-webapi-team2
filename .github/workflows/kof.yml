@@ -26,12 +26,16 @@ jobs:
         run: dotnet format --verify-no-changes -v d
       - name: Run tests
         run: |
+          ls -a
+          echo "======================================================="
           dotnet tool install --global dotnet-sonarscanner
           dotnet tool install --global dotnet-coverage
           dotnet sonarscanner begin /k:"king-of-tokyo-webapi-jalakey" /o:"jala-devops-key" /d:sonar.login="dc50955257c767e63a14e2eed8f72d27ba549fd8" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.qualitygate.wait=true
           dotnet build --no-incremental KOF.sln
           dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
           dotnet sonarscanner end /d:sonar.login="dc50955257c767e63a14e2eed8f72d27ba549fd8"
+          echo "======================================================="
+          ls -a
       #- uses: actions/checkout@v2
       # Build docker-compose image
       #- name: Build docker-compose image
