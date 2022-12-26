@@ -54,6 +54,15 @@ jobs:
         run: dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
       - name: End the sonarqb process
         run: dotnet sonarscanner end /d:sonar.login="${{secrets.SSCANNER_TOKEN}}"
+      - name: Run sonar quality gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
+        # Force to fail step after specific time.
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SSCANNER_TOKEN }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}-image:$(date +%s)
       - uses: actions/checkout@v2
