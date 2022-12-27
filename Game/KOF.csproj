@@ -4,6 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>True</IsPackable>
+    <PackageId>King.Of.Tokyo.WebAPI</PackageId>
+    <Authors>Joaquin, Juan, Valeria</Authors>
+    <Company>Jalasoft</Company>
+    <Description>King of tokyo web api</Description>
+    <PackageTags>DevOps, Jalasoft, Bootcamp, AT, kingoftokyo</PackageTags>
+    <RepositoryUrl>https://github.com/BC-LT-AT-FS-02/king-of-tokyo-webapi-team2</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
