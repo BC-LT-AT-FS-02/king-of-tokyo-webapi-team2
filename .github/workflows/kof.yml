@@ -83,6 +83,6 @@ jobs:
         run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
       - name: Nuget push
         run: |
-        dotnet build -c Release
-        dotnet pack -c Release --no-build --output .
-        dotnet nuget push "*.nupkg" --api-key ${{secrets.NugetPack}} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet build -c Release
+          dotnet pack -c Release --no-build --output .
+          dotnet nuget push "*.nupkg" --api-key ${{secrets.NugetPack}} --source https://api.nuget.org/v3/index.json --skip-duplicate
