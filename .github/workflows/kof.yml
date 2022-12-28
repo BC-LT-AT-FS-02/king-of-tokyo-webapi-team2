@@ -22,62 +22,68 @@ jobs:
         run: dotnet tool restore --tool-manifest .config/dotnet-tools.json
       - name: Build
         run: dotnet build
-      - name: Check format issues
-        run: dotnet format --verify-no-changes -v d
-      - name: Run tests
-        run: dotnet test -l html --collect:"XPlat Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}"
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
-      - name: Generate code coverage report
-        run: dotnet reportgenerator -reports:"TestResults-${{ matrix.dotnet-version }}/**/*.cobertura.xml" -targetdir:".coveragereport"
-      - name: Upload code coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-${{ matrix.dotnet-version }}
-          path: .coveragereport
-      # Sonarqb
-      - uses: actions/checkout@v3
-      - name: Restore project sonarqb
-        run: dotnet restore
-      - name: Install dotnet-coverage
-        run: dotnet tool install --global dotnet-coverage
-      - name: Start sonarqb process
-        run: dotnet sonarscanner begin /k:"${{secrets.SSCANNER_KEY}}" /o:"${{secrets.SSCANNER_ORGANIZATION}}" /d:sonar.login="${{secrets.SSCANNER_TOKEN}}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
-      - name: Build the project
-        run: dotnet build --no-incremental KOF.sln
-      - name: Run the coverage
-        run: dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
-      - name: End the sonarqb process
-        run: dotnet sonarscanner end /d:sonar.login="${{secrets.SSCANNER_TOKEN}}"
-      - name: Run sonar quality gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
-        # Force to fail step after specific time.
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SSCANNER_TOKEN }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}-image:$(date +%s)
-      - uses: actions/checkout@v2
-      # Build docker-compose image
-      - name: Build docker-compose image
-        run: docker-compose build web
-      # Log in to Docker Hub
-      - name: Login to Docker Hub
-        env: 
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      # Tag the Docker image
-      - name: Tag the Docker image
-        run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
-      # Push the Docker image to Docker Hub
-      - name: Push the Docker image
-        run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
+      # - name: Check format issues
+      #   run: dotnet format --verify-no-changes -v d
+      # - name: Run tests
+      #   run: dotnet test -l html --collect:"XPlat Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      # - name: Upload test results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-results-${{ matrix.dotnet-version }}
+      #     path: TestResults-${{ matrix.dotnet-version }}
+      #   # Use always() to always run this step to publish test results when there are test failures
+      #   if: ${{ always() }}
+      # - name: Generate code coverage report
+      #   run: dotnet reportgenerator -reports:"TestResults-${{ matrix.dotnet-version }}/**/*.cobertura.xml" -targetdir:".coveragereport"
+      # - name: Upload code coverage report
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: code-coverage-${{ matrix.dotnet-version }}
+      #     path: .coveragereport
+      # # Sonarqb
+      # - uses: actions/checkout@v3
+      # - name: Restore project sonarqb
+      #   run: dotnet restore
+      # - name: Install dotnet-coverage
+      #   run: dotnet tool install --global dotnet-coverage
+      # - name: Start sonarqb process
+      #   run: dotnet sonarscanner begin /k:"${{secrets.SSCANNER_KEY}}" /o:"${{secrets.SSCANNER_ORGANIZATION}}" /d:sonar.login="${{secrets.SSCANNER_TOKEN}}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+      # - name: Build the project
+      #   run: dotnet build --no-incremental KOF.sln
+      # - name: Run the coverage
+      #   run: dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
+      # - name: End the sonarqb process
+      #   run: dotnet sonarscanner end /d:sonar.login="${{secrets.SSCANNER_TOKEN}}"
+      # - name: Run sonar quality gate check
+      #   id: sonarqube-quality-gate-check
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   with:
+      #     scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
+      #   # Force to fail step after specific time.
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SSCANNER_TOKEN }}
+      #   # Use always() to always run this step to publish test results when there are test failures
+      #   if: ${{ always() }}-image:$(date +%s)
+      # - uses: actions/checkout@v2
+      # # Build docker-compose image
+      # - name: Build docker-compose image
+      #   run: docker-compose build web
+      # # Log in to Docker Hub
+      # - name: Login to Docker Hub
+      #   env: 
+      #     DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      #     DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      #   run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      # # Tag the Docker image
+      # - name: Tag the Docker image
+      #   run: docker tag king-of-tokyo-webapi-team2_web:latest ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
+      # # Push the Docker image to Docker Hub
+      # - name: Push the Docker image
+      #   run: docker push ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
+      - name: Build
+        run: dotnet build -c Release
+      - name: Pack nugets
+        run: dotnet pack -c Release --no-build --output .
+      - name: Push to NuGet
+        run: dotnet nuget push "*.nupkg" --api-key ${{secrets.NugetPack}} --source https://api.nuget.org/v3/index.json
