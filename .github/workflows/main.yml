@@ -34,6 +34,10 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     steps:
+      - name: Get PK
+        run: |
+          echo "${{secrets.SSH_DEV_SERVER_PK}}" >> pk
+          chmod 400 pk
       - name: SSH Dev Server
-        run: ssh -i ${{secrets.SSH_DEV_SERVER_PK}} ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
+        run: ssh -i pk ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
