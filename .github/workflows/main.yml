@@ -35,5 +35,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: SSH Dev Server
-        run: ssh -i ${{secrets.SSH_DEV_SERVER_PK}} ubuntu@$DEV_SERVER_IP docker --version
+        run: ssh -i ${{secrets.SSH_DEV_SERVER_PK}} ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
