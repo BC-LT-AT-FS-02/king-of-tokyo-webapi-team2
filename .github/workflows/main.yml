@@ -40,8 +40,10 @@ jobs:
           chmod 400 pk
       - name: SSH Dev Server
         run: |
+          echo "{{secrets.SSH_FINGERPRINT}}" >> ~/.ssh/known_hosts
           #touch ~/.ssh/known_hosts
-          ssh-keyscan -H -t ed25519 {{secrets.DEV_SERVER_IP}}  >> ~/.ssh/known_hosts
+          #ssh -T {{secrets.DEV_SERVER_IP}}
+          #ssh-keyscan -H -t ed25519 {{secrets.DEV_SERVER_IP}}  >> ~/.ssh/known_hosts
           #ssh-keygen -R {{secrets.DEV_SERVER_IP}}
           ssh -i pk ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
