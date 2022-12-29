@@ -40,6 +40,7 @@ jobs:
           chmod 400 pk
       - name: SSH Dev Server
         run: |
+          touch ~/.ssh/known_hosts
           ssh-keygen -R {{secrets.DEV_SERVER_IP}}
           ssh -i pk ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
