@@ -2,10 +2,11 @@ name: King of Tokyo
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'feature/deploy-kot' ]
 
 jobs:
   build-image:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
