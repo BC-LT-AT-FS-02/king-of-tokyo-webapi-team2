@@ -7,7 +7,7 @@ on:
 jobs:
   build-image:
     #if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: self-hosted
+    runs-on: trainer
     steps:
       - uses: actions/checkout@v3
       # Build docker-compose image
@@ -28,7 +28,8 @@ jobs:
       # Remove and logout
       - name: Remove the image and logout from Docker
         run: |
-          docker image prune -a -f
+          #docker image prune -a -f
+          docker rmi ${{secrets.DOCKER_USERNAME}}/kot-image:$GITHUB_RUN_ID
           docker logout
 
   deploy-dev:
