@@ -38,7 +38,7 @@ jobs:
         run: |
           touch .env
           echo "USERNAME=${{secrets.DOCKER_USERNAME}}" >> .env
-          echo "IMAGE_NAME="kot-image" >> .env
+          echo "IMAGE_NAME=kot-image" >> .env
           echo "IMAGE_TAG=$GITHUB_RUN_ID" >> .env
           cat .env
       - name: Get PK
