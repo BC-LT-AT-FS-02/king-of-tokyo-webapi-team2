@@ -45,6 +45,8 @@ jobs:
         run: |
           echo "${{secrets.SSH_DEV_SERVER_PK}}" >> pk
           chmod 400 pk
+      - name: Copy files for deployment
+        run: scp -i pk -o StrictHostKeyChecking=no .env deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
       - name: SSH Dev Server
         run: |
           ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
