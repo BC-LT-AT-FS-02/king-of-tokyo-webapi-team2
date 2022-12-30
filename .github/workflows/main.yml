@@ -59,11 +59,10 @@ jobs:
       - name: Deploy KOT Web API into Dev Server
         run: |
           ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} <<-SHELL
-            # Implement Docker Login to pull the Container Image
-            #export DOCKER_USERNAME=$(echo $(cat docker_user))
-            #export DOCKER_PASSWORD=$(echo $(cat docker_pass))
-            #echo $DOCKER_USERNAME
             docker login -u $(cat docker_user) -p $(cat docker_pass)
             docker-compose -f deploy-docker-compose.yaml up -d
+            docker logout`
+            rm -f docker_user 
+            rm -f docker_pass
           SHELL
 
