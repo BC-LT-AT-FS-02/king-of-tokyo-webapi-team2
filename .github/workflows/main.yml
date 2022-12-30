@@ -34,16 +34,18 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     steps:
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "USERNAME=${{secrets.DOCKER_USERNAME}}" >> .env
+          echo "IMAGE_NAME="kot-image" >> .env
+          echo "IMAGE_TAG=$GITHUB_RUN_ID" >> .env
+          cat .env
       - name: Get PK
         run: |
           echo "${{secrets.SSH_DEV_SERVER_PK}}" >> pk
           chmod 400 pk
       - name: SSH Dev Server
         run: |
-          #echo "{{secrets.SSH_FINGERPRINT}}" >> ~/.ssh/known_hosts
-          #touch ~/.ssh/known_hosts
-          #ssh -T {{secrets.DEV_SERVER_IP}}
-          #ssh-keyscan -H -t ed25519 {{secrets.DEV_SERVER_IP}}  >> ~/.ssh/known_hosts
-          #ssh-keygen -R {{secrets.DEV_SERVER_IP}}
           ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
