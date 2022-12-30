@@ -55,6 +55,6 @@ jobs:
       - name: Deploy KOT Web API into Dev Server
         run: |
           ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} <<-SHELL
-            docker-compose up -d
+            docker-compose -f deploy-docker-compose.yaml up -d
           SHELL
 
