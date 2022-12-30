@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-image:
-    #if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: trainer
     steps:
       - uses: actions/checkout@v3
@@ -42,7 +42,7 @@ jobs:
           touch .env
           echo "USERNAME=${{secrets.DOCKER_USERNAME}}" >>.env
           echo "IMAGE_NAME=kot-image" >> .env
-          echo "IMAGE_TAG=$GITHUB_RUN_ID" >> .env
+          echo "IMAGE_TAG=3805370181" >> .env
           cat .env
       - name: Get PK
         run: |
