@@ -48,7 +48,8 @@ jobs:
       - name: Copy files for deployment
         run: |
           scp -i pk -o StrictHostKeyChecking=no .env ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
-          scp -i pk -o StrictHostKeyChecking=no ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
+          cat ./deploy-docker-compose.yaml
+          #scp -i pk -o StrictHostKeyChecking=no ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
 
       - name: SSH Dev Server
         run: |
