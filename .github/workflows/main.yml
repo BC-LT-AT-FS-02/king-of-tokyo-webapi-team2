@@ -62,7 +62,7 @@ jobs:
             # Implement Docker Login to pull the Container Image
             export DOCKER_USERNAME=$(echo $(cat docker_user))
             export DOCKER_PASSWORD=$(echo $(cat docker_pass))
-            echo DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker-compose -f deploy-docker-compose.yaml up -d
           SHELL
 
