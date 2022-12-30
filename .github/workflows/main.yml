@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-image:
-    if: ${{ github.ref == 'refs/heads/main' }}
+    #if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
@@ -51,7 +51,9 @@ jobs:
           scp -i pk -o StrictHostKeyChecking=no .env ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
           #scp -i pk -o StrictHostKeyChecking=no ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
 
-      - name: SSH Dev Server
+      - name: Deploy KOT Web API into Dev Server
         run: |
-          ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
+          ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} <<-SHELL
+            docker-compose up -d
+          SHELL
 
