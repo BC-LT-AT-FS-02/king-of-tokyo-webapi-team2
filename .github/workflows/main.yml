@@ -32,7 +32,7 @@ jobs:
           docker logout
 
   deploy-dev:
-    runs-on: trainer
+    runs-on: ubuntu-latest
     steps:
       - name: Get PK
         run: |
@@ -45,5 +45,5 @@ jobs:
           #ssh -T {{secrets.DEV_SERVER_IP}}
           #ssh-keyscan -H -t ed25519 {{secrets.DEV_SERVER_IP}}  >> ~/.ssh/known_hosts
           #ssh-keygen -R {{secrets.DEV_SERVER_IP}}
-          ssh -i pk ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
+          ssh -i pk -oStrictHostKeyChecking=no ubuntu@${{secrets.DEV_SERVER_IP}} docker --version
 
