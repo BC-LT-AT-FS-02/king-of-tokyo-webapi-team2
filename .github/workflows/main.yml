@@ -34,6 +34,7 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Create .env file
         run: |
           touch .env
@@ -47,8 +48,7 @@ jobs:
           chmod 400 pk
       - name: Copy files for deployment
         run: |
-          scp -i pk -o StrictHostKeyChecking=no .env ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
-          cat ./deploy-docker-compose.yaml
+          scp -i pk -o StrictHostKeyChecking=no .env ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
           #scp -i pk -o StrictHostKeyChecking=no ./deploy-docker-compose.yaml ubuntu@${{secrets.DEV_SERVER_IP}}:/home/ubuntu
 
       - name: SSH Dev Server
