@@ -32,7 +32,7 @@ jobs:
           docker logout
 
   deploy-dev:
-    runs-on: shared-runner
+    runs-on: self-hosted
     steps:
       - name: Get PK
         run: |
