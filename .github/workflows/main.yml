@@ -32,7 +32,7 @@ jobs:
           docker logout
 
   deploy-dev:
-    runs-on: ubuntu-latest
+    runs-on: shared-runner
     steps:
       - name: Get PK
         run: |
@@ -40,7 +40,7 @@ jobs:
           chmod 400 pk
       - name: SSH Dev Server
         run: |
-          echo "{{secrets.SSH_FINGERPRINT}}" >> ~/.ssh/known_hosts
+          #echo "{{secrets.SSH_FINGERPRINT}}" >> ~/.ssh/known_hosts
           #touch ~/.ssh/known_hosts
           #ssh -T {{secrets.DEV_SERVER_IP}}
           #ssh-keyscan -H -t ed25519 {{secrets.DEV_SERVER_IP}}  >> ~/.ssh/known_hosts
